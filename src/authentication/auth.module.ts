@@ -7,11 +7,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User } from './entities/user.entity';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   imports: [
+    ConfigModule,
     //Para reflejarlo como tabla en la BBDD
     TypeOrmModule.forFeature([ User ]), //Lleva el nombre de la entidad que vamos a estar manejando en este módulo
     PassportModule.register({ //Indico modo de autenticación que quiero, es decir, cómo evaluar el método de acceso: JWT
@@ -36,6 +38,9 @@ import { User } from './entities/user.entity';
   ],
   exports: [
     TypeOrmModule, //en el caso que de quiera trabajar en otro módulo con la entidad User
+    JwtStrategy,
+    PassportModule,
+    JwtModule
   ],
 })
 export class AuthModule {}
