@@ -26,7 +26,6 @@ export class User {
     isActive: boolean;
 
     @Column('text', {
-        array: true,
         default: 'individual' //Tipos: individual, profesional, pyme, organización
     })
     userType: string;
