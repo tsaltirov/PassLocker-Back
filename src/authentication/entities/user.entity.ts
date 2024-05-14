@@ -27,9 +27,9 @@ export class User {
 
     @Column('text', {
         array: true,
-        default: ['user']
+        default: 'individual' //Tipos: individual, profesional, pyme, organización
     })
-    roles: string[];
+    userType: string;
 
     @BeforeInsert()
     checkFieldsBeforeInsert(){
