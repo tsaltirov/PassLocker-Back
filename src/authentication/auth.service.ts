@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -7,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +17,7 @@ export class AuthService {
         @InjectRepository(User) //Para incorporar nuestra entidad que está en otro módulo
         private readonly userRepository: Repository<User>,
     
-        //private readonly jwtService: JwtService, //Viene o hace parte del JwtModule, lo necesitamos para generar el jwt
+        private readonly jwtService: JwtService, //Viene o hace parte del JwtModule, lo necesitamos para generar el jwt
         ){}
 
     async create(createUserDto: CreateUserDto) {
@@ -34,8 +36,7 @@ export class AuthService {
     
           return {
             ...user,
-            //token: this.getJwtToken( { email: user.email} )
-            //token: this.getJwtToken( { id: user.id} )
+            token: this.getJwtToken( { id: user.id} )
           };
           
         } catch (error) {
@@ -63,8 +64,7 @@ export class AuthService {
   
       return {
         ...user,
-        //token: this.getJwtToken( { email: user.email} )
-        //token: this.getJwtToken( { id: user.id} )
+        token: this.getJwtToken( { id: user.id} )
       };
       
     }
