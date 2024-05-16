@@ -3,11 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-
+import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User } from './entities/user.entity';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   controllers: [AuthController],
@@ -34,7 +35,36 @@ import { JwtStrategy } from './strategies/jwt.strategy';
             expiresIn: '2h',
           }
         }
-      }})
+      }}),
+      //Configuración de nodemailer. Configuración SMTP del correo que vamos a utilizar.
+      MailerModule.forRootAsync({
+        useFactory: () => ({
+          transport: {
+            host: 'smtp.hostinger.com',
+            pool:true,
+            port: 587,
+            secure: false, 
+            ignoreTLS:true,
+            auth: {
+              user: process.env.USER_MAIL,
+              pass: process.env.PASSWORD_MAIL,
+            },
+            tls: {
+              
+          }
+          },
+          defaults: {
+            from:'"nest-modules" <modules@nestjs.com>',
+          },
+          template: {
+            dir: process.cwd() + '/templates/',
+            adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+            options: {
+              strict: true,
+            },
+          },
+        }),
+      })
   ],
   exports: [
     TypeOrmModule, //en el caso que de quiera trabajar en otro módulo con la entidad User
