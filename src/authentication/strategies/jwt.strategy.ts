@@ -19,7 +19,9 @@ export class JwtStrategy extends PassportStrategy( Strategy ){
     ){
         //Cuando definimos un constructor, por defecto, el PassportStrategy requiere llamar al constructor del padre...
         super({
+
             secretOrKey: configService.get('JWT_SECRET'),
+            ignoreExpiration: false,
             //Aquí definimos en donde espero recibir el JWT o Token, En este caso vendrá como Bearer Token
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         });
@@ -29,10 +31,10 @@ export class JwtStrategy extends PassportStrategy( Strategy ){
     //Este método "validate" se va a llamar si antes:
     //  1. El JWT no ha expirado y
     //  2. Si la firma del JWT hace match con el payload
-    async validate( payload: JwtPayload): Promise<User>{
+    async validate( payload: JwtPayload){
 
         const { id } = payload;
-
+        
         //vamos a consultar la BBDD para buscar a un usuario con dicho id
         const user = await this.userRepository.findOneBy({ id });
 
@@ -43,7 +45,7 @@ export class JwtStrategy extends PassportStrategy( Strategy ){
             throw new UnauthorizedException('User is inactive, contact the Admin');
 
         //console.log({user});       
-        return user; //Lo que sea que retorne, se va a añadir a la "request" (request.user)
+        return user
     }
 
 }

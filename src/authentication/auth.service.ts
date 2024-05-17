@@ -37,7 +37,7 @@ export class AuthService {
     
           return {
             ...user,
-            token: this.getJwtToken( { id: user.id} )
+            //token: this.getJwtToken( { id: user.id} )
           };
           
         } catch (error) {
@@ -237,7 +237,7 @@ export class AuthService {
   async twofa(forgetUserDto: ForgetUserDto) {
 
     try {
-      
+     
       const {email,code } = forgetUserDto;
       const user = await this.userRepository.findOne({ 
         where: { email },
@@ -246,7 +246,9 @@ export class AuthService {
 
       if (!user)
         throw new NotFoundException('User does not exist!');
-
+        
+        
+/*
       this
         .mailerService
         .sendMail({
@@ -406,7 +408,7 @@ export class AuthService {
         .catch((err) => {
           console.log(err)
         });
-
+*/
       return {
         message:'Correo enviado correctamente'
         //token: this.getJwtToken( { email: user.email} )
@@ -444,6 +446,8 @@ export class AuthService {
       
     }
 
+    
+
     private getJwtToken( payload: JwtPayload ){
 
       //Vamos a generar el token con el payload
@@ -452,6 +456,8 @@ export class AuthService {
       return token;
   
     }
+
+
 
     private handleDBErrors(error:any): never {
 

@@ -1,8 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post,UseGuards,Get,Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ForgetUserDto } from './dto/forget-user.dto';
+import { JwtAuthGuard } from './strategies/jwt-auth.guard';
+
 
 @Controller('auth')
 export class AuthController {
@@ -27,6 +29,16 @@ export class AuthController {
     loginUser(@Body() loginUserDto: LoginUserDto) {
       return this.authService.login(loginUserDto);
     }
+    
+    //Guardia para verificar con el passportstrategy el token que recibe. Devolverá datos usuario
+    @UseGuards(JwtAuthGuard)
+    @Get('verifylogin')
+    getProfile(@Request() req) {
+    return req.user;
+    } 
+    
+
+    
 }
 
 
