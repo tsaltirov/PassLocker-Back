@@ -29,6 +29,11 @@ export class AuthController {
     loginUser(@Body() loginUserDto: LoginUserDto) {
       return this.authService.login(loginUserDto);
     }
+    //Función que actualiza la contraseña del usuario.
+    @Post('updatePassword')
+    updatePassword(@Body() loginUserDto: LoginUserDto) {
+      return this.authService.updatepassword(loginUserDto);
+    }
     
     //Guardia para verificar con el passportstrategy el token que recibe. Devolverá datos usuario
     @UseGuards(JwtAuthGuard)

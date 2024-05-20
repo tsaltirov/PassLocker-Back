@@ -457,7 +457,29 @@ export class AuthService {
   
     }
 
+    async updatepassword(loginUserDto: LoginUserDto) {
 
+      const { password, email } = loginUserDto;
+  
+      const user = await this.userRepository.findOne({ 
+        where: { email },
+        select: { email: true, password: true, id: true }, //sólo selecciona estos atributos
+      });
+      
+      
+      if (!user)
+        throw new UnauthorizedException('Credentials are not valid (email)');
+        
+        var idclient= user.id;
+        loginUserDto.password = bcrypt.hashSync( password, 10);
+        await this.userRepository.update(idclient,loginUserDto);
+  
+      return {
+        message:'Contraseña actualizada correctamente.'
+        
+      };
+      
+    }
 
     private handleDBErrors(error:any): never {
 
