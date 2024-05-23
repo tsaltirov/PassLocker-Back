@@ -247,19 +247,22 @@ export class AuthService {
 
     async requestResetPassword(
       requestResetPasswordDto: RequestResetPasswordDto,
-    ): Promise<void> {
+    ) {
       const { email } = requestResetPasswordDto;
       const user = await this.findOneByEmail(email);
       user.resetPasswordToken = v4();
       try {
         this.userRepository.save(user); 
+        return {
+          resetPasswordToken: user.resetPasswordToken,
+        };
       } catch (error) {
         this.handleDBErrors(error);
       }
-      //todo enviar correo
+      //todo enviar correo y mensaje de confirmación
     }
 
-    async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
+    async resetPassword(resetPasswordDto: ResetPasswordDto) {
       const { resetPasswordToken, password } = resetPasswordDto;
      
       const user = await this.userRepository.findOne({ 
@@ -274,6 +277,9 @@ export class AuthService {
       user.password = bcrypt.hashSync( password, 10);
       user.resetPasswordToken = null;
       this.userRepository.save(user);
+      return {
+        message: 'Cuenta reestablecida con éxito.',
+      };
     }
   
 

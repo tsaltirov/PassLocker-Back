@@ -30,12 +30,12 @@ export class AuthController {
     @Patch('request-reset-password')
     requestResetPassword(
     @Body() requestResetPasswordDto: RequestResetPasswordDto,
-    ): Promise<void> {
+    ) {
       return this.authService.requestResetPassword(requestResetPasswordDto);
     }
 
     @Patch('/reset-password')
-    resetPassword(@Body() resetPasswordDto: ResetPasswordDto): Promise<void> {
+    resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
       return this.authService.resetPassword(resetPasswordDto);
     }
 }
