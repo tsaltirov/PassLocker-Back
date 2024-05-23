@@ -23,7 +23,7 @@ export class AuthController {
     }
 
     @Get('activate-account')
-    activateAccount(@Query() activateUserDto: ActivateUserDto): Promise<void> {
+    activateAccount(@Query() activateUserDto: ActivateUserDto){
       return this.authService.activateUser(activateUserDto);
     }
 

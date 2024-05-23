@@ -227,7 +227,7 @@ export class AuthService {
       throw new UnauthorizedException('Credentials are not valid');
     }
 
-    async activateUser(activateUserDto: ActivateUserDto): Promise<void> {
+    async activateUser(activateUserDto: ActivateUserDto) {
       const { id, code } = activateUserDto;
       const user = await this.userRepository.findOne({ 
         where: { id, activationToken: code, isActive: false},
@@ -240,6 +240,9 @@ export class AuthService {
   
       user.isActive = true;
       this.userRepository.save(user);
+      return {
+        message: 'Cuenta activada con éxito.',
+      };
     }
 
     async requestResetPassword(
