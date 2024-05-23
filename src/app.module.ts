@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './authentication/auth.module';
-import { SeedModule } from './seed/seed.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -20,7 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
 
     AuthModule, 
-    SeedModule],
+  ],
   controllers: [],
   providers: [],
 })
