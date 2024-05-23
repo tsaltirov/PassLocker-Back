@@ -1,15 +1,15 @@
-import { IsEmail, IsIn, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsEmail, IsIn, IsNotEmpty, IsString, Length, Matches } from "class-validator";
 
-export class CreateUserDto{
+export class RegisterUserDto{
 
+    @IsNotEmpty()
     @IsString()
     @IsEmail()
     email: string;
 
-
+    @IsNotEmpty()
     @IsString()
-    @MinLength(6)
-    @MaxLength(50)
+    @Length(6, 50)
     @Matches(
         /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'The password must have a Uppercase, lowercase letter and a number'
@@ -17,11 +17,12 @@ export class CreateUserDto{
     password: string;
 
     
+    @IsNotEmpty()
     @IsString()
-    @MinLength(1)
+    @Length(2, 20)
     fullName: string;
 
-
+    @IsNotEmpty()
     @IsIn(['individual','professional','pyme','organization'])
     userType: string;
 

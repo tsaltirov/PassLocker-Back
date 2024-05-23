@@ -1,5 +1,5 @@
 //import { Product } from '../../products/entities';
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, CreateDateColumn } from 'typeorm';
 
 @Entity('users') //ponemos el nombre 'users'
 export class User {
@@ -20,15 +20,36 @@ export class User {
     @Column('text')
     fullName: string;
 
-    @Column('bool', {
-        default: true,
-    })
-    isActive: boolean;
-
+    
     @Column('text', {
         default: 'individual' //Tipos: individual, profesional, pyme, organización
     })
     userType: string;
+    
+    @Column('bool', {
+        default: false,
+        name: 'is_active',
+    })
+    isActive: boolean;
+
+    @Column({ 
+        type: 'uuid', 
+        unique: true, 
+        name: 'activation_token' })
+    activationToken: string;
+
+    @Column({
+        type: 'uuid',
+        unique: true,
+        name: 'reset_password_token',
+        nullable: true,
+      })
+    resetPasswordToken: string;
+
+    @CreateDateColumn({
+        name: 'created_on',
+    })
+    createdOn: Date;
 
     @BeforeInsert()
     checkFieldsBeforeInsert(){

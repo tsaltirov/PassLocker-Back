@@ -1,7 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { ActivateUserDto } from './dto/activate-user.dto';
+
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 
 
 @Controller('auth')
@@ -9,13 +13,30 @@ export class AuthController {
     constructor( private readonly authService: AuthService ){};
 
     @Post('register')
-    createUser(@Body() createUserDto: CreateUserDto) {
-      return this.authService.create(createUserDto);
+    registerUser(@Body() registerUserDto: RegisterUserDto): Promise<{}> {
+      return this.authService.registerUser(registerUserDto);
     }
 
     @Post('login')
-    loginUser(@Body() loginUserDto: LoginUserDto) {
+    loginUser(@Body() loginUserDto: LoginUserDto): Promise<{accessToken: string}> {
       return this.authService.login(loginUserDto);
+    }
+
+    @Get('activate-account')
+    activateAccount(@Query() activateUserDto: ActivateUserDto): Promise<void> {
+      return this.authService.activateUser(activateUserDto);
+    }
+
+    @Patch('request-reset-password')
+    requestResetPassword(
+    @Body() requestResetPasswordDto: RequestResetPasswordDto,
+    ): Promise<void> {
+      return this.authService.requestResetPassword(requestResetPasswordDto);
+    }
+
+    @Patch('/reset-password')
+    resetPassword(@Body() resetPasswordDto: ResetPasswordDto): Promise<void> {
+      return this.authService.resetPassword(resetPasswordDto);
     }
 }
 

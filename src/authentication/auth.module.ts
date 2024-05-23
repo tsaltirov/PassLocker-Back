@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
+import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User } from './entities/user.entity';
@@ -34,7 +35,22 @@ import { JwtStrategy } from './strategies/jwt.strategy';
             expiresIn: '2h',
           }
         }
-      }})
+      }}),
+
+      MailerModule.forRootAsync({
+        useFactory: () => ({
+          transport: {
+            host: process.env.MAIL_HOST,
+            port: +process.env.MAIL_HOST,
+            secure: false, 
+            auth: {
+              user: process.env.MAIL_USER,
+              pass: process.env.MAIL_PASSWORD,
+            },
+          },
+        }),
+      })
+
   ],
   exports: [
     TypeOrmModule, //en el caso que de quiera trabajar en otro módulo con la entidad User
