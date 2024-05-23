@@ -205,7 +205,6 @@ export class AuthService {
           await this.mailerService.sendMail( sendEmaildto );
               
           return {
-            ...user,
             token,
             message: 'Correo enviado correctamente.',
           };
