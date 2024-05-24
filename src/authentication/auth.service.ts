@@ -410,7 +410,8 @@ export class AuthService {
 
 
         return {
-          resetPasswordToken: user.resetPasswordToken,
+          //resetPasswordToken: user.resetPasswordToken,
+          message: 'Correo enviado correctamente.',
         };
       } catch (error) {
         this.handleDBErrors(error);
