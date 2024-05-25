@@ -3,8 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-
 import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User } from './entities/user.entity';
@@ -41,11 +42,26 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         useFactory: () => ({
           transport: {
             host: process.env.MAIL_HOST,
-            port: +process.env.MAIL_HOST,
+            pool:true,
+            port: +process.env.MAIL_PORT,
             secure: false, 
+            ignoreTLS:true,
             auth: {
               user: process.env.MAIL_USER,
               pass: process.env.MAIL_PASSWORD,
+            },
+            tls: {
+
+            }
+          },
+          defaults: {
+            from:'"nest-modules" <modules@nestjs.com>',
+          },
+          template: {
+            dir: process.cwd() + '/templates/',
+            adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+            options: {
+              strict: true,
             },
           },
         }),

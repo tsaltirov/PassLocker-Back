@@ -27,16 +27,16 @@ export class User {
     userType: string;
     
     @Column('bool', {
-        default: false,
+        default: true,
         name: 'is_active',
     })
     isActive: boolean;
 
-    @Column({ 
+    /* @Column({ 
         type: 'uuid', 
         unique: true, 
         name: 'activation_token' })
-    activationToken: string;
+    activationToken: string; */
 
     @Column({
         type: 'uuid',

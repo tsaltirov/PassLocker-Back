@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -7,15 +7,16 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { v4 } from 'uuid';
 
-import { RegisterUserDto } from './dto/register-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { ActivateUserDto } from './dto/activate-user.dto';
-
 import { User } from './entities/user.entity';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { SendMailInfo } from './interfaces/send-mail-info.interface';
+
+import { RequestRegisterUserDto } from './dto/request-register-user.dto';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-import { SendMailInfo } from './interfaces/send-mail-info.interface';
+import { LoginRequestDto } from './dto/login-request.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+
 
 const global_url="http://localhost:3000/";
 
@@ -29,24 +30,36 @@ export class AuthService {
         private readonly mailerService: MailerService,
     ){}
 
-    async registerUser(registerUserDto: RegisterUserDto) {
+    async requestRegisterUser(requestRegisterUserDto: RequestRegisterUserDto) {
 
-        try {
-    
-          const { password, ...userData } = registerUserDto;
+          const { password, ...userData } = requestRegisterUserDto;
+
+          const user = await this.findOneByEmail( userData.email );
+          if ( user ) return {
+            message: 'Usuario ya registrado.',
+          };
           
           //Registra usuario inactivo en BBDD
-          const user = this.userRepository.create({
+           /* const user = this.userRepository.create({
             ...userData,
             password: bcrypt.hashSync( password, 10),
             activationToken: v4(),
-          });
+          }); */
     
-          await this.userRepository.save(user);
-          delete user.password;
+          //await this.userRepository.save(user);
+          //delete user.password;
 
           //Prepara envío de correo
-          const token = this.getJwtToken( { id: user.id} );
+          //const token = this.getJwtToken( { id: user.id} );
+
+          const token = this.getJwtToken({ 
+            email: userData.email,
+            fullName: userData.fullName,
+            userType: userData.userType,
+            password: bcrypt.hashSync( password, 10), 
+          } );
+
+          try {
 
           this.sendMail({
             to: userData.email,
@@ -216,17 +229,194 @@ export class AuthService {
 
       const { password, email } = loginUserDto;
       const user = await this.findOneByEmail(email);
+
+      if ( !user ) {
+        throw new UnprocessableEntityException('This action can not be done');}
   
       if ( bcrypt.compareSync( password, user.password) )
         return {
-          accessToken: this.getJwtToken( { id: user.id} )
+          accessToken: this.getJwtToken( {  
+            email: user.email,
+            fullName: user.fullName,
+            userType: user.userType,
+            password: user.password } )
         };
       
       throw new UnauthorizedException('Credentials are not valid');
     }
 
-    async activateUser(activateUserDto: ActivateUserDto) {
-      const { id, activationToken } = activateUserDto;
+    async loginRequest(loginRequestDto: LoginRequestDto) {
+
+        const {email,code } = loginRequestDto;
+        const user = await this.findOneByEmail(email);
+  
+        if (!user)
+          throw new NotFoundException('User does not exist!');
+
+        try {
+          this.sendMail({
+            to: user.email,
+            from: 'info@passLocker.com',
+            subject: 'Verification Code',
+            html: `<!DOCTYPE html>
+            <html>
+            <head>
+            <style>
+            .plan {
+              border-radius: 16px;
+              box-shadow: 0 30px 30px -25px rgba(0, 38, 255, 0.205);
+              padding: 10px;
+              background-color: #fff;
+              color: #697e91;
+              max-width: 300px;
+            }
+            
+            .plan strong {
+              font-weight: 600;
+              color: #425275;
+            }
+            
+            .plan .inner {
+              align-items: center;
+              padding: 20px;
+              padding-top: 40px;
+              background-color: #ecf0ff;
+              border-radius: 12px;
+              position: relative;
+            }
+            
+            .plan .pricing {
+              position: absolute;
+              top: 0;
+              right: 0;
+              background-color: #bed6fb;
+              border-radius: 99em 0 0 99em;
+              display: flex;
+              align-items: center;
+              padding: 0.625em 0.75em;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #425475;
+            }
+            
+            .plan .pricing small {
+              color: #707a91;
+              font-size: 0.75em;
+              margin-left: 0.25em;
+            }
+            
+            .plan .title {
+              font-weight: 600;
+              font-size: 1.25rem;
+              color: #425675;
+            }
+            
+            .plan .title + * {
+              margin-top: 0.75rem;
+            }
+            
+            .plan .info + * {
+              margin-top: 1rem;
+            }
+            
+            .plan .features {
+              display: flex;
+              flex-direction: column;
+            }
+            
+            .plan .features li {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            }
+            
+            .plan .features li + * {
+              margin-top: 0.75rem;
+            }
+            
+            .plan .features .icon {
+              background-color: #1FCAC5;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              color: #fff;
+              border-radius: 50%;
+              width: 20px;
+              height: 20px;
+            }
+            
+            .plan .features .icon svg {
+              width: 14px;
+              height: 14px;
+            }
+            
+            .plan .features + * {
+              margin-top: 1.25rem;
+            }
+            
+            .plan .action {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: end;
+            }
+            
+            .plan .button {
+              background-color: #6558d3;
+              border-radius: 6px;
+              color: #fff;
+              font-weight: 500;
+              font-size: 1.125rem;
+              text-align: center;
+              border: 0;
+              outline: 0;
+              width: 100%;
+              padding: 0.625em 0.75em;
+              text-decoration: none;
+            }
+            
+            .plan .button:hover, .plan .button:focus {
+              background-color: #4133B7;
+            }
+            </style>
+            </head>
+            <body>
+            <div class="plan">
+            <div class="inner">
+              <span class="pricing">
+                
+              </span>
+              <p class="title">Verification code:</p>
+              <p class="title"> ${code}</p>
+              <p class="info">Insert this validation code to confirm.</p>
+              <p class="info">Thanks for using PassLoker.</p>
+              
+              
+            </div>
+            </div>
+                    </body>
+                    <footer class="footer py-4">
+                      <div class="container">
+                          
+                              <div class="col-lg-3 text-lg-start">Copyright &copy; PassLocker 2024</div>
+                          
+                      </div>
+                  </footer>
+                    </html>`,
+          });
+              
+          return {
+            //token,
+            message: 'Correo enviado correctamente.',
+          };
+        } catch (error) {
+          this.handleDBErrors(error);
+        }
+    }
+    
+
+    async registerUser(requestRegisterUserDto: RequestRegisterUserDto) {
+      /* const { id, activationToken } = activateUserDto;
       const user = await this.userRepository.findOne({ 
         where: { id, activationToken: activationToken, isActive: false},
         select: { email: true, password: true, id: true }, //sólo selecciona estos atributos
@@ -240,7 +430,22 @@ export class AuthService {
       this.userRepository.save(user);
       return {
         message: 'Cuenta activada con éxito.',
-      };
+      }; */
+
+      try {
+        const { email, fullName, userType, password } = requestRegisterUserDto;
+          
+        //Registra usuario en BBDD
+          const user = this.userRepository.create({ email, fullName, userType, password });
+          await this.userRepository.save(user);
+          delete user.password;
+          return {
+            //token,
+            message: 'Usuario registrado correctamente.',
+          };
+      } catch (error) {
+        this.handleDBErrors(error);
+      }
     }
 
     async requestResetPassword(
@@ -248,6 +453,10 @@ export class AuthService {
     ) {
       const { email } = requestResetPasswordDto;
       const user = await this.findOneByEmail(email);
+      if (!user) {
+        throw new UnprocessableEntityException('This action can not be done');
+      }
+
       user.resetPasswordToken = v4();
       try {
         this.userRepository.save(user); 
@@ -466,9 +675,9 @@ export class AuthService {
         where: { email },
         select: { email: true, password: true, id: true }, //sólo selecciona estos atributos
       });
-      if (!user) {
+      /* if (!user) {
         throw new UnprocessableEntityException('This action can not be done');
-      }
+      } */
       return user;
     };
 

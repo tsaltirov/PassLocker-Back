@@ -31,10 +31,10 @@ export class JwtStrategy extends PassportStrategy( Strategy ){
     //  2. Si la firma del JWT hace match con el payload
     async validate( payload: JwtPayload): Promise<User>{
 
-        const { id } = payload;
+        const { email } = payload;
 
         //vamos a consultar la BBDD para buscar a un usuario con dicho id
-        const user = await this.userRepository.findOneBy({ id });
+        const user = await this.userRepository.findOneBy({ email });
 
         if(!user)
             throw new UnauthorizedException('Token not valid');
