@@ -22,7 +22,6 @@ async function bootstrap() {
   .setTitle('PassLocker RESTFul API')
   .setDescription('PassLocker endpoints')
   .setVersion('1.0')
-  //.addTag('cats') //Es un agrupador
   .build();
   const document = SwaggerModule.createDocument(app, config); //puedo cambiar, tema, colores, etc
   SwaggerModule.setup('api', app, document); // se crea en el endpoint api, va a envial la app y nuestro docto
