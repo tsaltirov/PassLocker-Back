@@ -103,7 +103,7 @@ export class User {
         this.email = this.email.toLowerCase().trim();
     }
 
-    //Todo Relación con tabla de contraseñas
+    //TODO: Relación con tabla de contraseñas
 /*     @OneToMany(
         //¿cómo se va a relacionar?:
         //1. Citamos la entidad con la que se relaciona, la tabla a la que quiero apuntar
