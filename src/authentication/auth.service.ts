@@ -18,6 +18,7 @@ import { LoginRequestDto } from './dto/login-request.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
 
+
 const global_url="http://localhost:3000/";
 
 @Injectable()
@@ -50,10 +51,11 @@ export class AuthService {
 
         this.sendMail({
           to: userData.email,
-          from: 'info@passLocker.com',
+          from: process.env.MAIL_USER,
           subject: 'Confirm your email',
           html: `<!DOCTYPE html>
-          <html>
+          <html lang="es">
+          
           <head>
           <style>
           .plan {
@@ -62,7 +64,7 @@ export class AuthService {
             padding: 10px;
             background-color: #fff;
             color: #697e91;
-            max-width: 300px;
+            max-width: 500px;
           }
           
           .plan strong {
@@ -103,6 +105,7 @@ export class AuthService {
             font-weight: 600;
             font-size: 1.25rem;
             color: #425675;
+            text-align:center;
           }
           
           .plan .title + * {
@@ -172,39 +175,40 @@ export class AuthService {
           .plan .button:hover, .plan .button:focus {
             background-color: #4133B7;
           }
+          
           </style>
+            
           </head>
+          
           <body>
           <div class="plan">
-    <div class="inner">
-      <span class="pricing">
+<div class="inner">
+<img src="cid:img4"  width="100"/>
+</div>
+		<div class="inner">
+			<p class="title">Confirme su cuenta</p>
+			<p class="info">Gracias por elegir PassLocker.</p>
+			<p class="info">Para confirmar su cuenta debe pulsar sobre el botón y empezará a disfrutar de su servicio.</p>
+			
+			<div class="action">
+			<a class="button" href="#">
+				¡ACTIVAR CUENTA!
+			</a>
+			</div>
+		</div>
+	</div>
         
-      </span>
-      <p class="title">Confirma tu correo electrónico.</p>
-      <p class="info">Gracias por elegir PassLocker para la gestión de tus contraseñas. </p>
-      <p class="info">Para acceder y disfrutar del servicio pulse el link o botón mas abajo para confirmar tu cuenta.</p>
-      
-      <div class="action">
-      <a class="button" href="${global_url}rutaAngular?token=${token}">
-        Confirmar mi cuenta
-      </a>
-      </div>
-    </div>
-    </div>
           </body>
-          <footer class="footer py-4">
-            <div class="container">
-                
-                    <div class="col-lg-3 text-lg-start">Copyright &copy; PassLocker 2024</div>
-                
-            </div>
-        </footer>
+          
           </html>`,
+          
+          
         });
           
         return {
           message: 'Correo enviado correctamente.',
         };
+       
       
       } catch (error) {
         this.handleDBErrors(error);
@@ -654,8 +658,13 @@ export class AuthService {
 
     private async sendMail( mailInfo: SendMailInfo ){
 
-      const emailData = { ...mailInfo };
+      const emailData = { ...mailInfo,attachments: [{
+        filename: 'img4.png',
+        path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img4.png',
+        cid: 'img4'
+    }] };
       await this.mailerService.sendMail( emailData );
+      
 
     }
  

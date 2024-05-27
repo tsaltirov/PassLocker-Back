@@ -54,6 +54,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
             }
           },
+          attachments: [{
+            filename: 'img4.png',
+            path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img4.png',
+            cid: 'img4'
+        }],
+          
           defaults: {
             from:'"nest-modules" <modules@nestjs.com>',
           },
@@ -63,6 +69,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
             options: {
               strict: true,
             },
+            
           },
         }),
       })
