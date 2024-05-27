@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -17,12 +18,13 @@ async function bootstrap() {
     })
   );
 
-
-
-
-
-
-
+  const config = new DocumentBuilder()
+  .setTitle('PassLocker RESTFul API')
+  .setDescription('PassLocker endpoints')
+  .setVersion('1.0')
+  .build();
+  const document = SwaggerModule.createDocument(app, config); //puedo cambiar, tema, colores, etc
+  SwaggerModule.setup('api', app, document); // se crea en el endpoint api, va a envial la app y nuestro docto
 
   await app.listen(3000);
 }
