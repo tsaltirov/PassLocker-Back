@@ -40,12 +40,9 @@ export class AuthService {
         message: 'Usuario ya registrado.',
       };
 
-      const token = this.getJwtToken({ 
-        email: userData.email,
-        fullName: userData.fullName,
-        userType: userData.userType,
-        password: bcrypt.hashSync( password, 10), 
-      } );
+      const passEncrypted = bcrypt.hashSync(password, 10);
+
+    
 
       try {
 
@@ -65,6 +62,7 @@ export class AuthService {
             background-color: #fff;
             color: #697e91;
             max-width: 500px;
+            text-align: center;
           }
           
           .plan strong {
@@ -183,7 +181,9 @@ export class AuthService {
           <body>
           <div class="plan">
 <div class="inner">
-<img src="cid:img4"  width="100"/>
+<img src="cid:img4"  width="400" height="300"/>
+<br>
+
 </div>
 		<div class="inner">
 			<p class="title">Confirme su cuenta</p>
@@ -191,10 +191,12 @@ export class AuthService {
 			<p class="info">Para confirmar su cuenta debe pulsar sobre el botón y empezará a disfrutar de su servicio.</p>
 			
 			<div class="action">
-			<a class="button" href="#">
+			<a class="button" href="${global_url}rutaAngular?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType={${userData.userType}}"">
 				¡ACTIVAR CUENTA!
 			</a>
 			</div>
+      <br>
+      <a href="url">Activar cuenta</a>
 		</div>
 	</div>
         
@@ -446,7 +448,8 @@ export class AuthService {
           from: 'info@passLocker.com',
           subject: 'Reset your email',
           html: `<!DOCTYPE html>
-          <html>
+          <html lang="es">
+          
           <head>
           <style>
           .plan {
@@ -455,7 +458,8 @@ export class AuthService {
             padding: 10px;
             background-color: #fff;
             color: #697e91;
-            max-width: 300px;
+            max-width: 500px;
+            text-align: center;
           }
           
           .plan strong {
@@ -496,6 +500,7 @@ export class AuthService {
             font-weight: 600;
             font-size: 1.25rem;
             color: #425675;
+            text-align:center;
           }
           
           .plan .title + * {
@@ -565,33 +570,35 @@ export class AuthService {
           .plan .button:hover, .plan .button:focus {
             background-color: #4133B7;
           }
+          
           </style>
+            
           </head>
+          
           <body>
           <div class="plan">
-          <div class="inner">
-            <span class="pricing">
-              
-            </span>
-            <p class="title">Confirma tu correo electrónico.</p>
-            <p class="info">Gracias por elegir PassLocker para la gestión de tus contraseñas. </p>
-            <p class="info">Para acceder y disfrutar del servicio pulse el link o botón mas abajo para confirmar tu cuenta.</p>
-            
-            <div class="action">
-            <a class="button" href="${global_url}rutaAngular?token=${user.resetPasswordToken}">
-              Confirmar mi cuenta
-            </a>
-            </div>
-          </div>
-          </div>
-                </body>
-                <footer class="footer py-4">
-                    <div class="container">
-                 
-                     <div class="col-lg-3 text-lg-start">Copyright &copy; PassLocker 2024</div>
-                 
-             </div>
-         </footer>
+<div class="inner">
+<img src="cid:img3"  width="400" height="300"/>
+<br>
+
+</div>
+		<div class="inner">
+			<p class="title">Reset Password</p>
+			<p class="info">Gracias por elegir PassLocker.</p>
+			<p class="info">Para restablecer su contraseña con la nueva indicada pulse en el botón o enlace.</p>
+			
+			<div class="action">
+			<a class="button" href="#">
+				¡RESTABLECER CONTRASEÑA!
+			</a>
+			</div>
+      <br>
+      <a href="url">Restablecer contraseña</a>
+		</div>
+	</div>
+        
+          </body>
+          
           </html>`,
         });
 
@@ -662,6 +669,11 @@ export class AuthService {
         filename: 'img4.png',
         path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img4.png',
         cid: 'img4'
+    },
+    {
+      filename: 'img3.png',
+      path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img3.png',
+      cid: 'img3'
     }] };
       await this.mailerService.sendMail( emailData );
       

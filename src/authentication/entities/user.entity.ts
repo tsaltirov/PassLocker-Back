@@ -1,6 +1,7 @@
 //import { Product } from '../../products/entities';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, CreateDateColumn } from 'typeorm';
+import { PasswordModule } from 'src/pass-handler/entities/password-module.entity';
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, CreateDateColumn, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity('users') //ponemos el nombre 'users'
 export class User {
@@ -92,6 +93,11 @@ export class User {
         name: 'created_on',
     })
     createdOn: Date;
+
+    //@OneToOne(() => PasswordModule)
+    //@JoinColumn()
+    //password_id: PasswordModule;            //relación tabla password
+    
 
     @BeforeInsert()
     checkFieldsBeforeInsert(){
