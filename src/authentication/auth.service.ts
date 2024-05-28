@@ -39,13 +39,8 @@ export class AuthService {
         message: 'Usuario ya registrado.',
       };
 
-      const token = this.getJwtToken({ 
-        email: userData.email,
-        fullName: userData.fullName,
-        userType: userData.userType,
-        password: bcrypt.hashSync( password, 10), 
-      } );
-  
+      const passEncrypted = bcrypt.hashSync( password, 10);
+     
       this.sendMail({
         to: userData.email,
         from: `${process.env.MAIL_USER}`,
@@ -183,7 +178,7 @@ export class AuthService {
     <p class="info">Para acceder y disfrutar del servicio pulse el link o botón mas abajo para confirmar tu cuenta.</p>
     
     <div class="action">
-    <a class="button" href="${global_url}rutaAngular?token=${token}">
+    <a class="button" href="${global_url}rutaAngular?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType={${userData.userType}}">
       Confirmar mi cuenta
     </a>
     </div>
