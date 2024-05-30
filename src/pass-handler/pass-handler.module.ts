@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PasswordModuleService } from './password-module.service';
 import { PassHandlerController } from './pass-handler.controller';
+import { PassHandlerService } from './pass-handler.service';
 
 @Module({
   controllers: [PassHandlerController],
-  providers: [PasswordModuleService],
+  providers: [PassHandlerService],
 })
 export class PasswordModuleModule {}

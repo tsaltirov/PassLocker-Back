@@ -3,7 +3,7 @@ import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
 import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
 
 @Injectable()
-export class PasswordModuleService {
+export class PassHandlerService {
   create(createPassHandlerDto: CreatePassHandlerDto) {
     return 'This action adds a new passwordModule';
   }
