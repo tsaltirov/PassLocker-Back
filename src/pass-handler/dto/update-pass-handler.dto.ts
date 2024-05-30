@@ -1,9 +1,9 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreatePasswordModuleDto } from './create-password-module.dto';
+import { CreatePassHandlerDto } from './create-pass-handler.dto';
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-export class UpdatePasswordModuleDto extends PartialType(CreatePasswordModuleDto) {
+export class UpdatePassHandlerDto extends PartialType(CreatePassHandlerDto) {
 
     @ApiProperty({
         example: 'ssssssddassd5645fsddfdgdgdgd',
@@ -25,11 +25,13 @@ export class UpdatePasswordModuleDto extends PartialType(CreatePasswordModuleDto
     @IsString()
     password: string;
 
+    @IsOptional()
     @IsString()
-    username: string;
+    userName?: string;
 
+    @IsOptional()
     @IsString()
-    userservice: string;
+    userService?: string;
 
 
 }

@@ -5,7 +5,7 @@ import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, One
 
 
 @Entity('password') //ponemos el nombre 'users'
-export class PasswordModule {
+export class PassHandler {
 
     @ApiProperty({
         example: 'cd533345-f1f3-48c9-a62c-7dc2da50c8f8',
@@ -25,10 +25,10 @@ export class PasswordModule {
 
 
     @Column('text')
-    username: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
+    userName: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
 
     @Column('text')
-    userservice: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
+    userService: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
 
    // @Column(() => User)
     //user_id: User;             // Relación one-to-one tabla de users.

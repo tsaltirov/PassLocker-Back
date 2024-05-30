@@ -1,15 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PasswordModuleService } from './password-module.service';
-import { CreatePasswordModuleDto } from './dto/create-password-module.dto';
-import { UpdatePasswordModuleDto } from './dto/update-password-module.dto';
+import {CreatePassHandlerDto} from './dto/create-pass-handler.dto';
+import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
+import { DeletePassHandlerDto } from './dto/delete-pass-handler.dto';
 
-@Controller('password-module')
-export class PasswordModuleController {
+@Controller('pass-handler')
+export class PassHandlerController {
   constructor(private readonly passwordModuleService: PasswordModuleService) {}
 
   @Post()
-  create(@Body() createPasswordModuleDto: CreatePasswordModuleDto) {
-    return this.passwordModuleService.create(createPasswordModuleDto);
+  create(@Body() createPassHandlerDto: CreatePassHandlerDto) {
+    return this.passwordModuleService.create(createPassHandlerDto);
   }
 
   @Get()
@@ -23,7 +24,7 @@ export class PasswordModuleController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePasswordModuleDto: UpdatePasswordModuleDto) {
+  update(@Param('id') id: string, @Body() updatePasswordModuleDto: UpdatePassHandlerDto) {
     return this.passwordModuleService.update(+id, updatePasswordModuleDto);
   }
 

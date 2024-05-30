@@ -1,6 +1,6 @@
 //import { Product } from '../../products/entities';
 import { ApiProperty } from '@nestjs/swagger';
-import { PasswordModule } from 'src/pass-handler/entities/password-module.entity';
+import { PassHandler } from 'src/pass-handler/entities/pass-handler.entity';
 import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, CreateDateColumn, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity('users') //ponemos el nombre 'users'

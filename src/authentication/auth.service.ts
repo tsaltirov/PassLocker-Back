@@ -20,6 +20,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 
 
 const global_url="http://localhost:3000/";
+const angular_url="http://localhost:4200/";
 
 @Injectable()
 export class AuthService {
@@ -191,12 +192,12 @@ export class AuthService {
 			<p class="info">Para confirmar su cuenta debe pulsar sobre el botón y empezará a disfrutar de su servicio.</p>
 			
 			<div class="action">
-			<a class="button" href="${global_url}rutaAngular?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType={${userData.userType}}"">
+			<a class="button" href="${angular_url}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">
 				¡ACTIVAR CUENTA!
 			</a>
 			</div>
       <br>
-      <a href="url">Activar cuenta</a>
+      <a href="${angular_url}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">Activar cuenta</a>
 		</div>
 	</div>
         

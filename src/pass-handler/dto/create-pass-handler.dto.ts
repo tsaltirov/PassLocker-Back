@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 
 
-export class CreatePasswordModuleDto {
+export class CreatePassHandlerDto {
 
 
     @ApiProperty({
@@ -24,11 +24,11 @@ export class CreatePasswordModuleDto {
     })
     @IsString()
     @IsNotEmpty()
-    username: string;
+    userName: string;
 
     @IsString()
     @IsNotEmpty()
-    userservice: string;
+    userService: string;
 
 
     @ApiProperty({

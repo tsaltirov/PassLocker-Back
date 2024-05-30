@@ -1,18 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PassHandlerController } from './pass-handler.controller';
 import { PasswordModuleService } from './password-module.service';
 
-describe('PasswordModuleService', () => {
-  let service: PasswordModuleService;
+describe('PassHandlerController', () => {
+  let controller: PassHandlerController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [PassHandlerController],
       providers: [PasswordModuleService],
     }).compile();
 
-    service = module.get<PasswordModuleService>(PasswordModuleService);
+    controller = module.get<PassHandlerController>(PassHandlerController);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(controller).toBeDefined();
   });
 });
