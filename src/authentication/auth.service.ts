@@ -20,6 +20,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 
 
 const global_url="http://localhost:3000/";
+const angular_url="http://localhost:4200/";
 
 @Injectable()
 export class AuthService {
@@ -191,12 +192,12 @@ export class AuthService {
 			<p class="info">Para confirmar su cuenta debe pulsar sobre el botón y empezará a disfrutar de su servicio.</p>
 			
 			<div class="action">
-			<a class="button" href="${global_url}rutaAngular?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType={${userData.userType}}"">
+			<a class="button" href="${angular_url}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">
 				¡ACTIVAR CUENTA!
 			</a>
 			</div>
       <br>
-      <a href="url">Activar cuenta</a>
+      <a href="${angular_url}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">Activar cuenta</a>
 		</div>
 	</div>
         
@@ -249,11 +250,12 @@ export class AuthService {
       try {
 
         this.sendMail({
-          to: user.email,
-          from: 'info@passLocker.com',
+          to: email,
+          from: process.env.MAIL_USER,
           subject: 'Verification Code',
           html: `<!DOCTYPE html>
-          <html>
+          <html lang="es">
+          
           <head>
           <style>
           .plan {
@@ -262,7 +264,8 @@ export class AuthService {
             padding: 10px;
             background-color: #fff;
             color: #697e91;
-            max-width: 300px;
+            max-width: 500px;
+            text-align: center;
           }
           
           .plan strong {
@@ -301,8 +304,9 @@ export class AuthService {
           
           .plan .title {
             font-weight: 600;
-            font-size: 1.25rem;
+            font-size: 1.75rem;
             color: #425675;
+            text-align:center;
           }
           
           .plan .title + * {
@@ -372,31 +376,27 @@ export class AuthService {
           .plan .button:hover, .plan .button:focus {
             background-color: #4133B7;
           }
+          
           </style>
+            
           </head>
+          
           <body>
           <div class="plan">
-          <div class="inner">
-            <span class="pricing">
-              
-            </span>
-            <p class="title">Verification code:</p>
-            <p class="title"> ${code}</p>
-            <p class="info">Insert this validation code to confirm.</p>
-            <p class="info">Thanks for using PassLoker.</p>
-            
-            
-          </div>
-          </div>
-                  </body>
-                  <footer class="footer py-4">
-                    <div class="container">
-                        
-                            <div class="col-lg-3 text-lg-start">Copyright &copy; PassLocker 2024</div>
-                        
-                    </div>
-                </footer>
-                  </html>`,
+<div class="inner">
+<img src="cid:img5"  width="400" height="300"/>
+<br>
+
+</div>
+		<div class="inner">
+			<p class="title">${code}</p>
+		
+		</div>
+	</div>
+        
+          </body>
+          
+          </html>`,
         });
             
         return {
@@ -445,7 +445,7 @@ export class AuthService {
         //Prepara envío de correo
         this.sendMail({
           to: email,
-          from: 'info@passLocker.com',
+          from: process.env.MAIL_USER,
           subject: 'Reset your email',
           html: `<!DOCTYPE html>
           <html lang="es">
@@ -665,7 +665,7 @@ export class AuthService {
 
     private async sendMail( mailInfo: SendMailInfo ){
 
-      const emailData = { ...mailInfo,attachments: [{
+      const emailData = { ...mailInfo, attachments: [{
         filename: 'img4.png',
         path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img4.png',
         cid: 'img4'
@@ -674,6 +674,11 @@ export class AuthService {
       filename: 'img3.png',
       path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img3.png',
       cid: 'img3'
+    },
+    {
+      filename: 'img5.png',
+      path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img5.png',
+      cid: 'img5'
     }] };
       await this.mailerService.sendMail( emailData );
       
