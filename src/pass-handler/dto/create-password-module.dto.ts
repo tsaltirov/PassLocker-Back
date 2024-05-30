@@ -24,7 +24,12 @@ export class CreatePasswordModuleDto {
     })
     @IsString()
     @IsNotEmpty()
-    description: string;
+    username: string;
+
+    @IsString()
+    @IsNotEmpty()
+    userservice: string;
+
 
     @ApiProperty({
         example: 'gggff44fkvkjjr',

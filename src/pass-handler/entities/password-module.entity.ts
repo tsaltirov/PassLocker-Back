@@ -25,7 +25,10 @@ export class PasswordModule {
 
 
     @Column('text')
-    description: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
+    username: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
+
+    @Column('text')
+    userservice: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
 
    // @Column(() => User)
     //user_id: User;             // Relación one-to-one tabla de users.

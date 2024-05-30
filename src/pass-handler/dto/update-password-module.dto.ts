@@ -25,6 +25,12 @@ export class UpdatePasswordModuleDto extends PartialType(CreatePasswordModuleDto
     @IsString()
     password: string;
 
+    @IsString()
+    username: string;
+
+    @IsString()
+    userservice: string;
+
 
 }
 
