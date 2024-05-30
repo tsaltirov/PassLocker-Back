@@ -26,6 +26,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config); //puedo cambiar, tema, colores, etc
   SwaggerModule.setup('api', app, document); // se crea en el endpoint api, va a envial la app y nuestro docto
 
+  app.enableCors();
+
   await app.listen(3000);
 }
 bootstrap();
