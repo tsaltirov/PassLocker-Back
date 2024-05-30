@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './authentication/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PasswordModuleModule } from './pass-handler/password-module.module';
+import { PasswordModuleModule } from './pass-handler/pass-handler.module';
 
 @Module({
   imports: [

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePasswordModuleDto } from './dto/create-password-module.dto';
-import { UpdatePasswordModuleDto } from './dto/update-password-module.dto';
+import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
+import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
 
 @Injectable()
 export class PasswordModuleService {
-  create(createPasswordModuleDto: CreatePasswordModuleDto) {
+  create(createPassHandlerDto: CreatePassHandlerDto) {
     return 'This action adds a new passwordModule';
   }
 
@@ -16,7 +16,7 @@ export class PasswordModuleService {
     return `This action returns a #${id} passwordModule`;
   }
 
-  update(id: number, updatePasswordModuleDto: UpdatePasswordModuleDto) {
+  update(id: number, updatePassHandlerDto: UpdatePassHandlerDto) {
     return `This action updates a #${id} passwordModule`;
   }
 
