@@ -665,21 +665,24 @@ export class AuthService {
 
     private async sendMail( mailInfo: SendMailInfo ){
 
-      const emailData = { ...mailInfo, attachments: [{
-        filename: 'img4.png',
-        path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img4.png',
-        cid: 'img4'
-    },
-    {
-      filename: 'img3.png',
-      path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img3.png',
-      cid: 'img3'
-    },
-    {
-      filename: 'img5.png',
-      path: 'C:/wamp64/www/passlockergit/PassLocker-Back/src/assets/img5.png',
-      cid: 'img5'
-    }] };
+      const emailData = { 
+        ...mailInfo, 
+        attachments: [{
+          filename: 'img4.png',
+          path: 'src/assets/img4.png',
+          cid: 'img4'
+        },
+        {
+          filename: 'img3.png',
+          path: 'src/assets/img3.png',
+          cid: 'img3'
+        },
+        {
+          filename: 'img5.png',
+          path: 'src/assets/img5.png',
+          cid: 'img5'
+        }] 
+      };
       await this.mailerService.sendMail( emailData );
       
 
