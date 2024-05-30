@@ -30,16 +30,4 @@ export class CreatePassHandlerDto {
     @IsNotEmpty()
     userService: string;
 
-
-    @ApiProperty({
-        example: 'gggff44fkvkjjr',
-        description: 'User belongs',
-        format: 'string',
-        
-    })
-    @IsNotEmpty()
-    @IsString()
-    user_id: string;
-
-
 }

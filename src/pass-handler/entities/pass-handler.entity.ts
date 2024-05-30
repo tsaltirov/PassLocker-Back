@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from 'src/authentication/entities/user.entity';
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, ManyToOne , OneToOne, JoinColumn } from 'typeorm';
 
 
 
-@Entity('password') //ponemos el nombre 'users'
+@Entity('passwords') //ponemos el nombre 'passwords'
 export class PassHandler {
 
     @ApiProperty({
@@ -30,8 +30,15 @@ export class PassHandler {
     @Column('text')
     userService: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
 
-   // @Column(() => User)
-    //user_id: User;             // Relación one-to-one tabla de users.
+    @ManyToOne(
+        //1. Citamos la entidad con la que se relaciona, la tabla a la que quiero apuntar
+       () => User,
+        //2. Relaciona instancia de User con Password. Ponemos el atributo o propiedad "passwords" que está en la entidad "User"
+       (user) => user.passwords,
+       //Esto hará que cada vez que se haga una consulta de passwords, cargue automáticamente la relación
+       { eager: true }
+    )
+    user: User
 
 
 

@@ -7,7 +7,7 @@ import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
 export class PassHandlerController {
   constructor(private readonly passwordModuleService: PassHandlerService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createPassHandlerDto: CreatePassHandlerDto) {
     return this.passwordModuleService.create(createPassHandlerDto);
   }
