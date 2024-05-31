@@ -1,6 +1,7 @@
 //import { Product } from '../../products/entities';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, CreateDateColumn } from 'typeorm';
+import { PassHandler } from 'src/pass-handler/entities/pass-handler.entity';
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, CreateDateColumn, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity('users') //ponemos el nombre 'users'
 export class User {
@@ -63,12 +64,6 @@ export class User {
     })
     isActive: boolean;
 
-    /* @Column({ 
-        type: 'uuid', 
-        unique: true, 
-        name: 'activation_token' })
-    activationToken: string; */
-
     @ApiProperty({
         example: 'cd533345-f1f3-48c9-a62c-7dc2da50c8f8',
         description: 'Reset Password Token',
@@ -103,14 +98,13 @@ export class User {
         this.email = this.email.toLowerCase().trim();
     }
 
-    //TODO: Relación con tabla de contraseñas
-/*     @OneToMany(
+    @OneToMany(
         //¿cómo se va a relacionar?:
         //1. Citamos la entidad con la que se relaciona, la tabla a la que quiero apuntar
-        () => Product,
-        //2. ¿Cómo se relaciona mi instancia de producto con esta tabla?. Ponemos el atributo o propiedad "user" que debería estar en la entidad "Product"
-        (product) => product.user,
+        () => PassHandler,
+        //2. ¿Cómo se relaciona mi instancia de users con esta tabla?. Ponemos el atributo o propiedad "user" que debería estar en la entidad "Password"
+        (passHandler) => passHandler.user,
     )
-    product: Product[]; */
+    passwords: PassHandler[];
 
 }

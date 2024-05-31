@@ -9,7 +9,7 @@ async function bootstrap() {
   //const logger = new Logger('Bootstrap')
 
   app.setGlobalPrefix('api');
-
+  app.enableCors();
   //Para la configuración global de pipes 
   app.useGlobalPipes(
     new ValidationPipe({

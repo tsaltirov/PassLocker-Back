@@ -54,6 +54,24 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
             }
           },
+          attachments: [
+            {
+              filename: 'img3.png',
+              path: 'src/assets/img3.png',
+              cid: 'img3'
+            },
+            {
+              filename: 'img4.png',
+              path: 'src/assets/img4.png',
+              cid: 'img4'
+            },
+            {
+              filename: 'img5.png',
+              path: 'src/assets/img5.png',
+              cid: 'img5'
+            },
+          ],
+          
           defaults: {
             from:'"nest-modules" <modules@nestjs.com>',
           },
@@ -63,6 +81,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
             options: {
               strict: true,
             },
+            
           },
         }),
       })
