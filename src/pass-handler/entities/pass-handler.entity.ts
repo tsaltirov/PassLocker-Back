@@ -2,8 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from 'src/authentication/entities/user.entity';
 
-
-
 @Entity('passwords') //ponemos el nombre 'passwords'
 export class PassHandler {
 
@@ -14,6 +12,12 @@ export class PassHandler {
     })
     @PrimaryGeneratedColumn('uuid') //uuid para el id de la contraseña.
     id: string; //cada contraseña es individual e única.
+    
+    @Column('text')
+    userService: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
+
+    @Column('text')
+    userName: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
 
     @ApiProperty({
         example: 'Abc123!',
@@ -22,13 +26,6 @@ export class PassHandler {
         maxLength: 50
     })
     password: string; //esta puede ser generada aleatoriamente o definida por el usuario, siempre se guardará encriptada por seguridad.
-
-
-    @Column('text')
-    userName: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
-
-    @Column('text')
-    userService: string; //El cliente anotará con que plataforma o servicio se relaciona su contraseña.
 
     @ManyToOne(
         //1. Citamos la entidad con la que se relaciona, la tabla a la que quiero apuntar
