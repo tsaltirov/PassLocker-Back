@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { User } from 'src/authentication/entities/user.entity';
 import { PassHandler } from './entities/pass-handler.entity';
 import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
@@ -16,11 +17,13 @@ export class PassHandlerService {
 
   async create(createPassHandlerDto: CreatePassHandlerDto, user: User) {
     try {
-
+     
       const { userService, userName, password } = createPassHandlerDto;
+
+      const passEncrypted = bcrypt.hashSync(password, 10);
         
       //Registra usuario en BBDD
-      const passwordItem = this.passHandlerRepository.create({ userService, userName, password, user });
+      const passwordItem = this.passHandlerRepository.create({ userService, userName, password: passEncrypted, user });
       await this.passHandlerRepository.save(passwordItem);
       delete passwordItem.password;
       return { passwordItem };
