@@ -22,9 +22,12 @@ export class PassHandlerController {
     return this.passwordModuleService.create(createPassHandlerDto, user);
   }
 
-  @Get()
-  findAll() {
-    return this.passwordModuleService.findAll();
+  @Get('findAll')
+  @UseGuards( AuthGuard() )
+  findAll(
+    @GetUser() user: User,
+  ) {
+    return this.passwordModuleService.findAll( user );
   }
 
   @Get(':id')

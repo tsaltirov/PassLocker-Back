@@ -34,8 +34,13 @@ export class PassHandlerService {
     
   }
 
-  findAll() {
-    return `This action returns all passwordModule`;
+  async findAll(user: User) {
+    const queryBuilder = this.passHandlerRepository.createQueryBuilder('pass');
+    const passwords = await queryBuilder
+      .where('pass.userId = :userId', { userId: user.id })
+      .getMany();
+  
+    return passwords;
   }
 
   findOne(id: number) {
