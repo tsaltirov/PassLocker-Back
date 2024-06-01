@@ -34,7 +34,7 @@ export class PassHandlerService {
     
   }
 
-  async findAll(user: User) {
+  async findAll(user: User): Promise<PassHandler[]> {
     const queryBuilder = this.passHandlerRepository.createQueryBuilder('pass');
     const passwords = await queryBuilder
       .where('pass.userId = :userId', { userId: user.id })
