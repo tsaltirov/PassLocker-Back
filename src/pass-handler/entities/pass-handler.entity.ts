@@ -25,6 +25,7 @@ export class PassHandler {
         minLength: 6,
         maxLength: 50
     })
+    @Column('text')
     password: string; //esta puede ser generada aleatoriamente o definida por el usuario, siempre se guardará encriptada por seguridad.
 
     @ManyToOne(
