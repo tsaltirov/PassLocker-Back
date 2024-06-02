@@ -5,6 +5,7 @@ import { User } from 'src/authentication/entities/user.entity';
 import { GetUser } from 'src/authentication/decorators/get-user.decorator';
 import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
 import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
+import { PassHandler } from './entities/pass-handler.entity';
 
 @Controller('pass-handler')
 export class PassHandlerController {
@@ -22,9 +23,12 @@ export class PassHandlerController {
     return this.passwordModuleService.create(createPassHandlerDto, user);
   }
 
-  @Get()
-  findAll() {
-    return this.passwordModuleService.findAll();
+  @Get('findAll')
+  @UseGuards( AuthGuard() )
+  findAll(
+    @GetUser() user: User,
+  ): Promise<PassHandler[]> {
+    return this.passwordModuleService.findAll( user );
   }
 
   @Get(':id')
