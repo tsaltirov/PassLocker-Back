@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -6,6 +6,7 @@ import { User } from 'src/authentication/entities/user.entity';
 import { PassHandler } from './entities/pass-handler.entity';
 import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
 import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class PassHandlerService {
@@ -43,16 +44,39 @@ export class PassHandlerService {
     return passwords;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} passwordModule`;
+  async findById(id: string): Promise<PassHandler> {
+    return this.passHandlerRepository
+      .createQueryBuilder('pass')
+      .where('pass.id = :id', { id })
+      .getOne();
   }
 
-  update(id: number, updatePassHandlerDto: UpdatePassHandlerDto) {
-    return `This action updates a #${id} passwordModule`;
+
+  async update(id: string, updatePassHandlerDto: UpdatePassHandlerDto) {
+    try {
+      const passupdated = await this.findById(id);
+      passupdated.userName = updatePassHandlerDto.userName;
+      passupdated.userService = updatePassHandlerDto.userService;
+      passupdated.password = bcrypt.hashSync(updatePassHandlerDto.password,10);
+      this.passHandlerRepository.save(passupdated);
+      return {
+        message:'Modificada con éxito'
+      };
+    } catch (error) {
+      this.handleDBErrors(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} passwordModule`;
+  async remove(id: string) {
+    try {
+      const passwordRemove = await this.passHandlerRepository.delete(id);
+      return {
+        message: 'Contraseña eliminada',
+      };
+
+    } catch (error) {
+      this.handleDBErrors(error);
+    }
   }
 
   private handleDBErrors(error:any): never {
