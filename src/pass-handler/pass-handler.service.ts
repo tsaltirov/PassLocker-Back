@@ -6,7 +6,7 @@ import { User } from 'src/authentication/entities/user.entity';
 import { PassHandler } from './entities/pass-handler.entity';
 import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
 import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
-import { UUID } from 'crypto';
+
 
 @Injectable()
 export class PassHandlerService {
@@ -44,11 +44,18 @@ export class PassHandlerService {
     return passwords;
   }
 
-  async findById(id: string): Promise<PassHandler> {
-    return this.passHandlerRepository
-      .createQueryBuilder('pass')
-      .where('pass.id = :id', { id })
-      .getOne();
+  async findById(id: string) {
+    try {
+
+      const password_item = await this.passHandlerRepository
+        .createQueryBuilder('pass')
+        .where('pass.id = :id', { id })
+        .getOne();
+
+      return password_item
+    } catch (error) {
+      this.handleDBErrors(error);
+    }
   }
 
 
@@ -64,6 +71,7 @@ export class PassHandlerService {
       };
     } catch (error) {
       this.handleDBErrors(error);
+      
     }
   }
 
@@ -80,9 +88,11 @@ export class PassHandlerService {
   }
 
   private handleDBErrors(error:any): never {
-
+    
     if( error.code === '23505')
       throw new BadRequestException(error.detail);
+    if(error.code ==='22P02')
+      throw new BadRequestException('No existe el valor');
     
     throw new InternalServerErrorException('Please check server logs');
   

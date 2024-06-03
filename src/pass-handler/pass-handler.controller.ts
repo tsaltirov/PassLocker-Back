@@ -6,8 +6,9 @@ import { GetUser } from 'src/authentication/decorators/get-user.decorator';
 import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
 import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
 import { PassHandler } from './entities/pass-handler.entity';
-import { UUID } from 'crypto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('PassHandler')
 @Controller('pass-handler')
 export class PassHandlerController {
 
@@ -16,6 +17,8 @@ export class PassHandlerController {
   ) {}
 
   @Post('create')
+  @ApiResponse({ status: 201, description: 'Created' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   @UseGuards( AuthGuard() )
   create(
     @Body() createPassHandlerDto: CreatePassHandlerDto,
@@ -25,6 +28,7 @@ export class PassHandlerController {
   }
 
   @Get('findAll')
+  @ApiResponse({ status: 200, description: 'Ok' })
   @UseGuards( AuthGuard() )
   findAll(
     @GetUser() user: User,
@@ -33,6 +37,7 @@ export class PassHandlerController {
   }
 
   @Get(':id')
+  @ApiResponse({ status: 200, description: 'Ok' })
   @UseGuards( AuthGuard() )
   findOne(
     @Param('id') id: string
@@ -42,12 +47,16 @@ export class PassHandlerController {
   }
 
   @Patch(':id')
+  @ApiResponse({ status: 200, description: 'Ok' })
+  @ApiResponse({ status: 500, description: 'Error update' })
   @UseGuards( AuthGuard() )
   update(@Param('id') id: string, @Body() updatePasswordModuleDto: UpdatePassHandlerDto) {
     return this.passwordModuleService.update( id,updatePasswordModuleDto);
   }
 
   @Delete(':id')
+  @ApiResponse({ status: 200, description: 'Ok' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   @UseGuards( AuthGuard() )
   remove(@Param('id') id: string) {
     return this.passwordModuleService.remove(id);
