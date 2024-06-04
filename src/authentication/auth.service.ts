@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Repository } from 'typeorm';
-
+//pruebas git
 import * as bcrypt from 'bcrypt';
 import { v4 } from 'uuid';
 
@@ -18,9 +18,7 @@ import { LoginRequestDto } from './dto/login-request.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
 
-
-const global_url="http://localhost:3000/";
-const angular_url="http://localhost:4200/";
+const angular_url=process.env.URL_FRONT;
 
 @Injectable()
 export class AuthService {
@@ -586,12 +584,12 @@ export class AuthService {
 			<p class="info">Para restablecer su contraseña con la nueva indicada pulse en el botón o enlace.</p>
 			
 			<div class="action">
-			<a class="button" href="#">
+			<a class="button" href="${angular_url}reset-password?token=${user.resetPasswordToken}">
 				¡RESTABLECER CONTRASEÑA!
 			</a>
 			</div>
       <br>
-      <a href="url">Restablecer contraseña</a>
+      <a href="${angular_url}reset-password?token=${user.resetPasswordToken}">Restablecer contraseña</a>
 		</div>
 	</div>
         
