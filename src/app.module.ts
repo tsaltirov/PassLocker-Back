@@ -9,6 +9,14 @@ import { PasswordModuleModule } from './pass-handler/pass-handler.module';
     ConfigModule.forRoot(),
 
     TypeOrmModule.forRoot({
+        //Configuración para realizar una conección certificada (ssl + extra), para cuando vayamos a desplegar y no nos de error.
+        //ssl va a obtener un valor booleano, dependiendo si se trata de PROD o no
+        ssl: process.env.STAGE === 'prod',
+        extra: {
+          ssl: process.env.STAGE === 'prod'
+          ? { rejectUnauthorized: false }
+          : null,
+        },
         type: 'postgres',
         host: process.env.DB_HOST,
         port: +process.env.DB_PORT,
