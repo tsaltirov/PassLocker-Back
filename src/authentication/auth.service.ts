@@ -18,7 +18,7 @@ import { LoginRequestDto } from './dto/login-request.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
 
-const angular_url=process.env.URL_FRONT;
+const angularUrl=process.env.URL_FRONT;
 
 @Injectable()
 export class AuthService {
@@ -190,12 +190,12 @@ export class AuthService {
 			<p class="info">Para confirmar su cuenta debe pulsar sobre el botón y empezará a disfrutar de su servicio.</p>
 			
 			<div class="action">
-			<a class="button" href="${angular_url}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">
+			<a class="button" href="${angularUrl}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">
 				¡ACTIVAR CUENTA!
 			</a>
 			</div>
       <br>
-      <a href="${angular_url}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">Activar cuenta</a>
+      <a href="${angularUrl}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">Activar cuenta</a>
 		</div>
 	</div>
         
@@ -584,12 +584,12 @@ export class AuthService {
 			<p class="info">Para restablecer su contraseña con la nueva indicada pulse en el botón o enlace.</p>
 			
 			<div class="action">
-			<a class="button" href="${angular_url}reset-password?token=${user.resetPasswordToken}">
+			<a class="button" href="${angularUrl}reset-password?token=${user.resetPasswordToken}">
 				¡RESTABLECER CONTRASEÑA!
 			</a>
 			</div>
       <br>
-      <a href="${angular_url}reset-password?token=${user.resetPasswordToken}">Restablecer contraseña</a>
+      <a href="${angularUrl}reset-password?token=${user.resetPasswordToken}">Restablecer contraseña</a>
 		</div>
 	</div>
         
