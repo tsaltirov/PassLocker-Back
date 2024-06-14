@@ -60,7 +60,7 @@ export class AuthService {
             padding: 10px;
             background-color: #fff;
             color: #697e91;
-            max-width: 500px;
+            max-width: 600px;
             text-align: center;
           }
           
@@ -106,7 +106,7 @@ export class AuthService {
           }
           
           .plan .title + * {
-            margin-top: 0.75rem;
+            margin-top: 0.45rem;
           }
           
           .plan .info + * {
@@ -156,6 +156,7 @@ export class AuthService {
           }
           
           .plan .button {
+            
             background-color: #6558d3;
             border-radius: 6px;
             color: #fff;
@@ -164,7 +165,7 @@ export class AuthService {
             text-align: center;
             border: 0;
             outline: 0;
-            width: 100%;
+            width: 93%;
             padding: 0.625em 0.75em;
             text-decoration: none;
           }
@@ -172,6 +173,8 @@ export class AuthService {
           .plan .button:hover, .plan .button:focus {
             background-color: #4133B7;
           }
+            
+
           
           </style>
             
@@ -180,7 +183,7 @@ export class AuthService {
           <body>
           <div class="plan">
 <div class="inner">
-<img src="cid:img4"  width="400" height="300"/>
+<img src="cid:img4"  width="300" height="260"/>
 <br>
 
 </div>
@@ -188,12 +191,12 @@ export class AuthService {
 			<p class="title">Confirme su cuenta</p>
 			<p class="info">Gracias por elegir PassLocker.</p>
 			<p class="info">Para confirmar su cuenta debe pulsar sobre el botón y empezará a disfrutar de su servicio.</p>
+      <br>
 			
-			<div class="action">
 			<a class="button" href="${angularUrl}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">
 				¡ACTIVAR CUENTA!
 			</a>
-			</div>
+      <br>
       <br>
       <a href="${angularUrl}registerverify?email=${userData.email}&password=${passEncrypted}&fullName=${userData.fullName}&userType=${userData.userType}">Activar cuenta</a>
 		</div>
@@ -202,8 +205,8 @@ export class AuthService {
           </body>
           
           </html>`,
-          
-          
+
+
         });
           
         return {
