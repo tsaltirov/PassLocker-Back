@@ -34,10 +34,10 @@ export class PassHandlerService {
       const passEncrypted = cryptrsecret.encrypt(password);
      
       //Registra usuario en BBDD
-      const passwordItem = this.passHandlerRepository.create({ userService, userName, password:passEncrypted, user });
-      await this.passHandlerRepository.save(passwordItem);
-      delete passwordItem.password;
-      return { passwordItem };
+      const passwordRecord = this.passHandlerRepository.create({ userService, userName, password:passEncrypted, user });
+      await this.passHandlerRepository.save(passwordRecord);
+      delete passwordRecord.password;
+      return { passwordRecord };
 
     } catch (error) {
       this.handleDBErrors(error);
