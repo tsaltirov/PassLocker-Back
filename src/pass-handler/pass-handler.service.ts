@@ -8,23 +8,33 @@ import { CreatePassHandlerDto } from './dto/create-pass-handler.dto';
 import { UpdatePassHandlerDto } from './dto/update-pass-handler.dto';
 
 
+//librearía de encriptación
+const Cryptr = require('cryptr');
+
+
+
+
+
 @Injectable()
 export class PassHandlerService {
-
+  
+  
   constructor(
     @InjectRepository(PassHandler)
     private readonly passHandlerRepository: Repository<PassHandler>,
   ){}
 
   async create(createPassHandlerDto: CreatePassHandlerDto, user: User) {
+    const cryptrsecret = new Cryptr(process.env.CRYPTR_SECRET); // Importante tener aquí definido el secret por el tema.ENV
     try {
      
       const { userService, userName, password } = createPassHandlerDto;
-
-      const passEncrypted = bcrypt.hashSync(password, 10);
-        
+     
+      //Encriptamos la pass para ser guardada.
+      const passEncrypted = cryptrsecret.encrypt(password);
+     
       //Registra usuario en BBDD
-      const passwordItem = this.passHandlerRepository.create({ userService, userName, password: passEncrypted, user });
+      const passwordItem = this.passHandlerRepository.create({ userService, userName, password:passEncrypted, user });
       await this.passHandlerRepository.save(passwordItem);
       delete passwordItem.password;
       return { passwordItem };
@@ -36,21 +46,27 @@ export class PassHandlerService {
   }
 
   async findAll(user: User): Promise<PassHandler[]> {
+    const cryptrsecret = new Cryptr(process.env.CRYPTR_SECRET); // Importante tener aquí definido el secret por el tema.ENV
     const queryBuilder = this.passHandlerRepository.createQueryBuilder('pass');
     const passwords = await queryBuilder
       .where('pass.userId = :userId', { userId: user.id })
       .getMany();
   
-    return passwords;
+      let passDecrypted= passwords.map(valor=>valor.password=cryptrsecret.decrypt(valor.password)); // decodificamos todo el array
+      return passwords;
   }
 
   async findById(id: string) {
+    const cryptrsecret = new Cryptr(process.env.CRYPTR_SECRET);
     try {
 
       const password_item = await this.passHandlerRepository
         .createQueryBuilder('pass')
         .where('pass.id = :id', { id })
         .getOne();
+
+      const passDecrypted = cryptrsecret.decrypt(password_item.password); //decodificamos contraseña
+      password_item.password = passDecrypted;
 
       return password_item
     } catch (error) {
@@ -60,11 +76,12 @@ export class PassHandlerService {
 
 
   async update(id: string, updatePassHandlerDto: UpdatePassHandlerDto) {
+    const cryptrsecret = new Cryptr(process.env.CRYPTR_SECRET);
     try {
       const passupdated = await this.findById(id);
       passupdated.userName = updatePassHandlerDto.userName;
       passupdated.userService = updatePassHandlerDto.userService;
-      passupdated.password = bcrypt.hashSync(updatePassHandlerDto.password,10);
+      passupdated.password = cryptrsecret.encrypt(updatePassHandlerDto.password); //encriptamos la pass
       this.passHandlerRepository.save(passupdated);
       return {
         message:'Modificada con éxito'
