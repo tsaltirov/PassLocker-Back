@@ -217,7 +217,7 @@ export class AuthService {
       }
     }
 
-    async login(loginUserDto: LoginUserDto): Promise<{accessToken: string}> {
+    async login(loginUserDto: LoginUserDto): Promise<{userFullName, accessToken: string}> {
 
       const { password, email } = loginUserDto;
       const user = await this.findOneByEmail(email);
@@ -227,6 +227,7 @@ export class AuthService {
       if ( bcrypt.compareSync( password, user.password) )
 
       return {
+        userFullName: user.fullName,
         accessToken: this.getJwtToken( {  
           email: user.email,
         })
@@ -417,7 +418,6 @@ export class AuthService {
         await this.userRepository.save(user);
         delete user.password;
         return {
-          userFullName: user.fullName,
           message: 'Usuario registrado correctamente.',
 
         };
