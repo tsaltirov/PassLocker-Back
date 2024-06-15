@@ -417,7 +417,7 @@ export class AuthService {
         await this.userRepository.save(user);
         delete user.password;
         return {
-          //token,
+          userFullName: user.fullName,
           message: 'Usuario registrado correctamente.',
 
         };
