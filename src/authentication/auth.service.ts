@@ -654,7 +654,7 @@ export class AuthService {
     private async findOneByEmail(email){
       const user = await this.userRepository.findOne({ 
         where: { email },
-        select: { email: true, password: true, id: true }, //sólo selecciona estos atributos
+        select: { email: true, fullName: true, password: true, id: true }, //sólo selecciona estos atributos
       });
 
       return user;
